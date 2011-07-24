@@ -1,9 +1,6 @@
+.DS_Store
+*.bak
+*.py[co]
 bin/*
 include/*
 lib/*
-.DS_Store
-.Python
-*.egg
-*.egg-info
-*.py[co]
-*.sqlite
