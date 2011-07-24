@@ -6,7 +6,6 @@ import os.path
 import re
 import string
 import sys
-import time
 
 import fsevents
 
