@@ -51,7 +51,7 @@ def open_page(page):
 def main():
     if len(sys.argv) != 2:
         raise Exception("Must pass name of exactly one file to open.")
-    page = os.path.abspath(sys.argv[1]) 
+    page = os.path.abspath(sys.argv[1])
     directory = string.join(page.split('/')[:-1], '/')
     
     output = open_page(page)
@@ -66,11 +66,9 @@ def main():
     
     observer.schedule(stream)
     observer.start()
-    # Threading means ^C won't work without checking for KeyboardInterrupt.
     try:
         while True:
-            # Simulate blocking.
-            time.sleep(60)
+            pass
     except (KeyboardInterrupt, OSError, IOError):
         observer.unschedule(stream)
         observer.stop()
