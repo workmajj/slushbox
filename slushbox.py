@@ -27,12 +27,7 @@ OPEN_SCRIPT = """tell application "%s"
 end tell
 """
 
-def refresh_page(page, window, tab):
-    print "Using %s to reload file: %s" % (BROWSER, page)
-    script = REFRESH_SCRIPT % (BROWSER, tab, window)
-    return commands.getoutput("osascript -e '%s'" % script)
-
-def event_handler(page, window, tab, event):
+def reload_page(page, window, tab, event):
     # See fsevents for inotify names.
     if event.mask & fsevents.IN_MODIFY:
         print "File modified: %s" % event.name
@@ -46,8 +41,11 @@ def event_handler(page, window, tab, event):
         print "File renamed: %s" % event.name
     elif event.mask & fsevents.IN_MOVED_TO:
         print "File renamed: %s" % event.name
-    response = refresh_page(page, window, tab)
-    if re.search(r'got an error', response):
+    
+    print "Using %s to reload file: %s" % (BROWSER, page)
+    s = REFRESH_SCRIPT % (BROWSER, tab, window)
+    output = commands.getoutput("osascript -e '%s'" % s)
+    if re.search(r'got an error', output):
         raise Exception("Window or tab no longer open.")
 
 def open_page(page):
@@ -68,7 +66,7 @@ def main():
     (window, tab) = open_page(page)
     
     observer = fsevents.Observer()
-    callback = functools.partial(event_handler, page, window, tab)
+    callback = functools.partial(reload_page, page, window, tab)
     stream = fsevents.Stream(callback, directory, file_events=True)
     
     observer.schedule(stream)
