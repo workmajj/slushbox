@@ -25,7 +25,9 @@ At this point, Slushbox is still a proof-of-concept project with a few known (an
 
 * Cannot limit the change-search tree to particular files or subdirectories.
 
-I'm planning to fix most of these as time allows. Thanks to [@robert_winslow](http://twitter.com/robert_winslow) for the initial idea!
+I'm planning to fix most of these soon, though I'll probably not add support for systems other than OS X.
+
+(Thanks to [@robert_winslow](http://twitter.com/robert_winslow) for the initial project idea!)
 
 Testing & Usage
 ---------------
