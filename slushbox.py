@@ -11,6 +11,8 @@ import fsevents
 
 BROWSER = "Google Chrome"
 
+# Scripts below use tabs instead of spaces.
+
 REFRESH_SCRIPT = """tell application "%s"
 	tell tab id %s of window id %s
 		execute javascript "window.location.reload()"
@@ -50,8 +52,12 @@ def event_handler(page, window, tab, event):
 
 def open_page(page):
     print "Using %s to open file: %s" % (BROWSER, page)
-    script = OPEN_SCRIPT % (BROWSER, page)
-    return commands.getoutput("osascript -e '%s'" % script)
+    s = OPEN_SCRIPT % (BROWSER, page)
+    output = commands.getoutput("osascript -e '%s'" % s)
+    r = re.search(r'tab id (\d+) of window id (\d+)', output)
+    if not r:
+        raise Exception("Couldn't get window and/or tab IDs.")
+    return (r.group(2), r.group(1))
 
 def main():
     if len(sys.argv) != 2:
@@ -59,11 +65,7 @@ def main():
     page = os.path.abspath(sys.argv[1])
     directory = string.join(page.split('/')[:-1], '/')
     
-    output = open_page(page)
-    r = re.search(r'tab id (\d+) of window id (\d+)', output)
-    if not r:
-        raise Exception("Couldn't get window and/or tab IDs.")
-    (tab, window) = (r.group(1), r.group(2))
+    (window, tab) = open_page(page)
     
     observer = fsevents.Observer()
     callback = functools.partial(event_handler, page, window, tab)
