@@ -75,12 +75,14 @@ def main():
     observer.start()
     try:
         while True:
-            time.sleep(1)
+            if not observer.isAlive():
+                break
     # Check for KeyboardInterrupt, otherwise ^C won't work.
     except (KeyboardInterrupt, OSError, IOError):
         observer.stop()
-        observer.unschedule(stream)
-        observer.join()
+    
+    observer.unschedule(stream)
+    observer.join()
 
 if __name__ == '__main__':
     main()
