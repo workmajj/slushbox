@@ -46,7 +46,7 @@ Testing & Usage
 
 4. At this point, Chrome should open if it's not already running, and the page will load in a new tab.
 
-5. Use a text editor to open the ```style.css``` page, located in the ```examples/static``` directory.
+5. Use a text editor to open the ```style.css``` page, located in the ```example/static``` directory.
 
 6. Modify ```style.css``` and then save your changes. When you save, ```ugly.html``` will reload in Chrome automatically.
 
