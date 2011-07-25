@@ -9,7 +9,8 @@ import sys
 
 import fsevents
 
-BROWSER = "Google Chrome"
+# BROWSER = "Google Chrome"
+BROWSER = "Safari"
 
 # Scripts below use tabs instead of spaces.
 
@@ -22,7 +23,7 @@ end tell
 
 OPEN_SCRIPT = """tell application "%s"
 	tell window 1
-		make new tab with properties {URL: "file://%s"}
+		make new tab with properties {URL:"file://%s"}
 	end tell
 end tell
 """
