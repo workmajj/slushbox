@@ -62,7 +62,7 @@ def main():
     if len(sys.argv) != 2:
         raise Exception("Must pass name of exactly one file to open.")
     page = os.path.abspath(sys.argv[1])
-    directory = string.join(page.split('/')[:-1], '/')
+    directory = os.path.dirname(page)
     
     (window, tab) = open_page(page)
     
