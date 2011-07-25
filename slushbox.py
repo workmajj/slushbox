@@ -11,13 +11,23 @@ import fsevents
 
 BROWSER = "Google Chrome"
 
+REFRESH_SCRIPT = """tell application "%s"
+	tell tab id %s of window id %s
+		execute javascript "window.location.reload()"
+	end tell
+end tell
+"""
+
+OPEN_SCRIPT = """tell application "%s"
+	tell window 1
+		make new tab with properties {URL: "file://%s"}
+	end tell
+end tell
+"""
+
 def refresh_page(page, window, tab):
     print "Using %s to reload file: %s" % (BROWSER, page)
-    script = 'tell application "%s"\n\
-        \ttell tab id %s of window id %s\n\
-        \t\texecute javascript "window.location.reload()"\n\
-        \tend tell\n\
-        end tell' % (BROWSER, tab, window)
+    script = REFRESH_SCRIPT % (BROWSER, tab, window)
     return commands.getoutput("osascript -e '%s'" % script)
 
 def event_handler(page, window, tab, event):
@@ -36,15 +46,11 @@ def event_handler(page, window, tab, event):
         print "File renamed: %s" % event.name
     response = refresh_page(page, window, tab)
     if re.search(r'got an error', response):
-        raise Exception("Window or tab no longer open in %s." % BROWSER)
+        raise Exception("Window or tab no longer open.")
 
 def open_page(page):
     print "Using %s to open file: %s" % (BROWSER, page)
-    script = 'tell application "%s"\n\
-        \ttell window 1\n\
-        \t\tmake new tab with properties {URL: "file://%s"}\n\
-        \tend tell\n\
-        end tell' % (BROWSER, page)
+    script = OPEN_SCRIPT % (BROWSER, page)
     return commands.getoutput("osascript -e '%s'" % script)
 
 def main():
@@ -56,7 +62,7 @@ def main():
     output = open_page(page)
     r = re.search(r'tab id (\d+) of window id (\d+)', output)
     if not r:
-        raise Exception("Couldn't get window or tab IDs.")
+        raise Exception("Couldn't get window and/or tab IDs.")
     (tab, window) = (r.group(1), r.group(2))
     
     observer = fsevents.Observer()
