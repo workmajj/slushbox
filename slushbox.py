@@ -9,8 +9,7 @@ import sys
 
 import fsevents
 
-# BROWSER = "Google Chrome"
-BROWSER = "Safari"
+BROWSER = "Google Chrome"
 
 # Scripts below use tabs instead of spaces.
 
