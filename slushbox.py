@@ -74,6 +74,7 @@ def main():
     try:
         while True:
             pass
+    # Check for KeyboardInterrupt, otherwise ^C won't work.
     except (KeyboardInterrupt, OSError, IOError):
         observer.unschedule(stream)
         observer.stop()
