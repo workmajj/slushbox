@@ -30,28 +30,28 @@ end tell
 def reload_page(page, window, tab, event):
     # See fsevents for inotify names.
     if event.mask & fsevents.IN_MODIFY:
-        print "File modified: %s" % event.name
+        print "File modified: %s" % (event.name)
     elif event.mask & fsevents.IN_ATTRIB:
-        print "File modified: %s" % event.name
+        print "File modified: %s" % (event.name)
     elif event.mask & fsevents.IN_CREATE:
-        print "File created: %s" % event.name
+        print "File created: %s" % (event.name)
     elif event.mask & fsevents.IN_DELETE:
-        print "File deleted: %s" % event.name
-    elif event.mask % fsevents.IN_MOVED_FROM:
-        print "File renamed: %s" % event.name
+        print "File deleted: %s" % (event.name)
+    elif event.mask & fsevents.IN_MOVED_FROM:
+        print "File renamed: %s" % (event.name)
     elif event.mask & fsevents.IN_MOVED_TO:
-        print "File renamed: %s" % event.name
+        print "File renamed: %s" % (event.name)
     
     print "Using %s to reload file: %s" % (BROWSER, page)
     s = REFRESH_SCRIPT % (BROWSER, tab, window)
-    output = commands.getoutput("osascript -e '%s'" % s)
+    output = commands.getoutput("osascript -e '%s'" % (s))
     if re.search(r'got an error', output):
         raise Exception("Window or tab no longer open.")
 
 def open_page(page):
     print "Using %s to open file: %s" % (BROWSER, page)
     s = OPEN_SCRIPT % (BROWSER, page)
-    output = commands.getoutput("osascript -e '%s'" % s)
+    output = commands.getoutput("osascript -e '%s'" % (s))
     r = re.search(r'tab id (\d+) of window id (\d+)', output)
     if not r:
         raise Exception("Couldn't get window and/or tab IDs.")
