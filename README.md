@@ -11,13 +11,13 @@ John J. Workman ([@workmajj](https://twitter.com/workmajj))
 Description
 -----------
 
-When you edit static web pages, you need to reload them often to see your changes. [Slushbox](http://www.urbandictionary.com/define.php?term=slushbox) opens local pages and then refreshes them automatically when files in their respective directories (or subdirectories) change. So if you edit a CSS file, for example, Slushbox will notice that and refresh accordingly.
+When you edit static web pages, you need to reload them often to see your changes. [Slushbox](http://www.urbandictionary.com/define.php?term=slushbox) opens local pages and then refreshes them automatically when files in their respective directories (or subdirectories) change. So if you edit a CSS file, for example, Slushbox will notice and refresh accordingly.
 
-At this point, Slushbox is mostly a proof-of-concept project with a few known (and probably some unknown!) limitations:
+At this point, Slushbox is still a proof-of-concept project with a few known (and probably some unknown!) limitations:
 
 * Runs only under Mac OS X, since it requires [the MacFSEvents library](http://pypi.python.org/pypi/MacFSEvents/) (though this could probably be generalized to Linux using [```inotify```](http://en.wikipedia.org/wiki/Inotify)).
 
-* Doesn't work with Firefox due to a lack of AppleScript support, and works poorly with Safari.
+* Doesn't work with Firefox due to a lack of AppleScript support, and so far works poorly with Safari.
 
 * Has no way to open dynamic pages, e.g. something you're developing locally using a web framework.
 
@@ -25,7 +25,7 @@ At this point, Slushbox is mostly a proof-of-concept project with a few known (a
 
 * Cannot limit the change-search tree to particular files or subdirectories.
 
-I'm not sure if I'll be developing Slushbox further, but it's at least neat to see the basic idea at work. This differs from most of the other automatic-reload extensions out there in that it's triggered by filesystem changes instead of a simple timer. Thanks to [@robert_winslow](http://twitter.com/robert_winslow) for the initial idea!
+I'm planning to fix most of these as time allows. Thanks to [@robert_winslow](http://twitter.com/robert_winslow) for the initial idea!
 
 Testing & Usage
 ---------------
@@ -38,17 +38,15 @@ Testing & Usage
 
         $ git clone git://github.com/workmajj/slushbox.git
 
-3. Create an HTML file in that temporary directory called ```test.html``` with these contents:
+3. Run Slushbox, telling it to open an example file and to watch its directory (and subdirectories) for changes:
 
-        <p>Lorem ipsum dolor sit amet blah blah blah.</p>
+        $ ./slushbox.py example/ugly.html
 
-4. Run Slushbox, telling it to open the file and to watch its directory (and subdirectories, if they exist) for changes:
+4. At this point, Chrome should open if it's not already running, and the page will load in a new tab.
 
-        $ ./slushbox.py test.html
+5. Use a text editor to open the ```style.css``` page, located in the ```examples/static``` directory.
 
-5. At this point, Chrome should open if it's not already running, and the page will load in a new tab.
-
-6. Now modify ```test.html``` in a text editor and then save your changes. When you save, the associated page should reload in Chrome automatically.
+6. Modify ```style.css``` and then save your changes. When you save, ```ugly.html``` will reload in Chrome automatically.
 
 License
 -------
