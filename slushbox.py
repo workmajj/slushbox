@@ -27,6 +27,9 @@ OPEN_SCRIPT = """tell application "%s"
 end tell
 """
 
+def osascript(script):
+    return commands.getoutput("osascript -e '%s'" % (script))
+
 def reload_page(page, window, tab, event):
     # See fsevents for inotify names.
     if event.mask & fsevents.IN_MODIFY:
@@ -43,15 +46,13 @@ def reload_page(page, window, tab, event):
         print "File renamed: %s" % (event.name)
     
     print "Using %s to reload file: %s" % (BROWSER, page)
-    s = REFRESH_SCRIPT % (BROWSER, tab, window)
-    output = commands.getoutput("osascript -e '%s'" % (s))
+    output = osascript(REFRESH_SCRIPT % (BROWSER, tab, window))
     if re.search(r'got an error', output):
         raise Exception("Window or tab no longer open.")
 
 def open_page(page):
     print "Using %s to open file: %s" % (BROWSER, page)
-    s = OPEN_SCRIPT % (BROWSER, page)
-    output = commands.getoutput("osascript -e '%s'" % (s))
+    output = osascript(OPEN_SCRIPT % (BROWSER, page))
     r = re.search(r'tab id (\d+) of window id (\d+)', output)
     if not r:
         raise Exception("Couldn't get window and/or tab IDs.")
