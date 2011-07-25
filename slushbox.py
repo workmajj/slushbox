@@ -6,6 +6,7 @@ import os.path
 import re
 import string
 import sys
+import time
 
 import fsevents
 
@@ -65,21 +66,21 @@ def main():
     directory = os.path.dirname(page)
     
     (window, tab) = open_page(page)
-    
-    observer = fsevents.Observer()
     callback = functools.partial(reload_page, page, window, tab)
     stream = fsevents.Stream(callback, directory, file_events=True)
     
+    observer = fsevents.Observer()
     observer.schedule(stream)
+    
     observer.start()
     try:
         while True:
-            pass
+            time.sleep(1)
     # Check for KeyboardInterrupt, otherwise ^C won't work.
     except (KeyboardInterrupt, OSError, IOError):
-        observer.unschedule(stream)
         observer.stop()
-    observer.join()
+        observer.unschedule(stream)
+        observer.join()
 
 if __name__ == '__main__':
     main()
