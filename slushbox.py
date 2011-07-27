@@ -21,7 +21,8 @@ end tell
 """
 
 OPEN_SCRIPT = """tell application "%s"
-	tell window 1
+	activate
+	tell first window
 		make new tab with properties {URL:"file://%s"}
 	end tell
 end tell
