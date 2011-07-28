@@ -1,8 +1,10 @@
-.DS_Store
 *.bak
 *.egg
 *.egg-info
-*.py[co]
+*.pyc
+*.pyo
+.DS_Store
 bin/*
+dist/*
 include/*
 lib/*
