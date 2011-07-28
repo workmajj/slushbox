@@ -11,23 +11,17 @@ John J. Workman ([@workmajj](https://twitter.com/workmajj))
 Description
 -----------
 
-When you edit static web pages, you need to reload them often to see your changes. [Slushbox](http://www.urbandictionary.com/define.php?term=slushbox) opens local pages and then refreshes them automatically when files in their respective directories (or subdirectories) change. So if you edit a CSS file, for example, Slushbox will notice and refresh accordingly.
+When building static web pages, you need to reload them often to see your changes. [Slushbox](http://www.urbandictionary.com/define.php?term=slushbox) opens local pages and then refreshes them automatically when files in their respective directories (or subdirectories) change. So if you edit a CSS file, for example, Slushbox will notice and refresh accordingly.
 
-At this point, Slushbox is still a proof-of-concept project with a few known (and probably some unknown!) limitations:
+At this point, Slushbox has a few known (and probably some unknown!) limitations:
 
-* Runs only under Mac OS X, since it requires [the MacFSEvents library](http://pypi.python.org/pypi/MacFSEvents/) (though this could probably be generalized to Linux using [```inotify```](http://en.wikipedia.org/wiki/Inotify)).
+* Runs only under Mac OS X, since it uses AppleScript for browser control.
 
-* Doesn't work with Firefox due to a lack of AppleScript support, and so far works poorly with Safari.
+* Currently works only with Google Chrome (not yet tested with Safari, and Firefox has minimal AppleScript support).
 
-* Has no way to open dynamic pages, e.g. something you're developing locally using a web framework.
+* Has no way to integrate with URLs routed by web frameworks.
 
-* Handles errors and exceptions very poorly, though it should recognize when windows/tabs have been closed.
-
-* Cannot limit the change-search tree to particular files or subdirectories.
-
-I'm planning to fix most of these soon, though I'll probably not add support for systems other than OS X.
-
-(Thanks to [@robert_winslow](http://twitter.com/robert_winslow) for the initial project idea!)
+Thanks to Robert Winslow ([@robert_winslow](http://twitter.com/robert_winslow)) for the initial project idea!
 
 Testing & Usage
 ---------------
@@ -42,13 +36,17 @@ Testing & Usage
 
 3. Run Slushbox, telling it to open an example file and to watch its directory (and subdirectories) for changes:
 
-        $ ./slushbox.py example/ugly.html
+        $ ./slushbox.py ../example/ugly.html
 
 4. At this point, Chrome should open if it's not already running, and the page will load in a new tab.
 
 5. Use a text editor to open the ```style.css``` page, located in the ```example/static``` directory.
 
 6. Modify ```style.css``` and then save your changes. When you save, ```ugly.html``` will reload in Chrome automatically.
+
+7. Try adding or deleting a file in the ```example``` directory and watch Slushbox reload. You can even navigate to other pages in the directory.
+
+8. When you're finished, close the browser tab Slushbox originally opened; the command-line program will quit automatically.
 
 License
 -------
