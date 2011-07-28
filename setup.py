@@ -17,8 +17,7 @@ setup(
         'Topic :: System :: Filesystems',
         'Topic :: Utilities'
     ],
-    install_requires=[
-        'MacFSEvents>=0.2.4'
-    ],
+    scripts=['bin/slushbox'],
+    install_requires=['MacFSEvents>=0.2.4'],
     packages=['slushbox']
 )
