@@ -1,5 +1,7 @@
 .DS_Store
 *.bak
+*.egg
+*.egg-info
 *.py[co]
 bin/*
 include/*
