@@ -13,7 +13,14 @@ BROWSER = "Google Chrome"
 
 # Scripts below use tabs instead of spaces.
 
-REFRESH_SCRIPT = """tell application "%s"
+IS_OPEN_SCRIPT = """tell application "%s"
+	tell tab id %s of window id %s
+		get URL
+	end tell
+end tell
+"""
+
+RELOAD_SCRIPT = """tell application "%s"
 	tell tab id %s of window id %s
 		execute javascript "window.location.reload()"
 	end tell
@@ -31,6 +38,13 @@ end tell
 def osascript(script):
     return commands.getoutput("osascript -e '%s'" % (script))
 
+def page_is_open(directory, window, tab):
+    output = osascript(IS_OPEN_SCRIPT % (BROWSER, tab, window))
+    if re.search(r'file://%s' % (directory), output):
+        return True
+    else:
+        return False
+
 def reload_page(page, window, tab, event):
     # See fsevents for inotify names.
     if event.mask & fsevents.IN_MODIFY:
@@ -47,9 +61,9 @@ def reload_page(page, window, tab, event):
         print "File renamed: %s" % (event.name)
     
     print "Using %s to reload file: %s" % (BROWSER, page)
-    output = osascript(REFRESH_SCRIPT % (BROWSER, tab, window))
+    output = osascript(RELOAD_SCRIPT % (BROWSER, tab, window))
     if re.search(r'got an error', output):
-        raise Exception("Window or tab no longer open.")
+        raise Exception("Window and/or tab no longer open.")
 
 def open_page(page):
     print "Using %s to open file: %s" % (BROWSER, page)
@@ -75,9 +89,14 @@ def main():
     observer.start()
     try:
         while True:
+            # End program if page is closed in browser.
+            if not page_is_open(directory, window, tab):
+                observer.stop()
+                break
+            # End program if thread raises exception.
             if not observer.isAlive():
                 break
-    # Check for KeyboardInterrupt, otherwise ^C won't work.
+    # Otherwise end program by checking for ^C with KeyboardInterrupt.
     except (KeyboardInterrupt, OSError, IOError):
         observer.stop()
     
