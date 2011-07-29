@@ -26,7 +26,7 @@ Thanks to Robert Winslow ([@robert_winslow](http://twitter.com/robert_winslow)) 
 Testing & Usage
 ---------------
 
-1. Install Slushbox from [PyPI](http://pypi.python.org/pypi/Slushbox). If you have ```[pip](http://guide.python-distribute.org/installation.html)``` on your system, you can do:
+1. Install Slushbox from [PyPI](http://pypi.python.org/pypi/Slushbox). If you have [```pip```](http://guide.python-distribute.org/installation.html) on your system, you can do:
 
         $ sudo pip install slushbox
 
@@ -40,7 +40,7 @@ Testing & Usage
 
 4. At this point, Chrome should open if it's not already running, and the page will load in a new tab.
 
-5. Now use a text editor to modify ```test.html```. Slushbox will reload the page in Chrome when you save. You can also try adding or deleting files in the directory, or creating and modifying subdirectories. While the page is open in Chrome, you can even navigate to other linked files.
+5. Now use a text editor to modify ```test.html```. Slushbox will reload the page in Chrome when you save. You can also try adding or deleting files in the directory, or creating and modifying subdirectories. While the page is open, you can even navigate to other linked files.
 
 6. When you're finished, close the browser tab Slushbox originally opened; the command-line program will quit automatically.
 
