@@ -26,27 +26,23 @@ Thanks to Robert Winslow ([@robert_winslow](http://twitter.com/robert_winslow)) 
 Testing & Usage
 ---------------
 
-1. Install the MacFSEvents library for Python. If you have ```pip``` on your system, you can do:
+1. Install Slushbox from [PyPI](http://pypi.python.org/pypi/Slushbox). If you have ```[pip](http://guide.python-distribute.org/installation.html)``` on your system, you can do:
 
-        $ pip install macfsevents
+        $ sudo pip install slushbox
 
-2. Next, clone the GitHub repo into a temporary directory:
+2. Next, create a temporary directory. In that directory, make an HTML file called ```test.html``` with these contents:
 
-        $ git clone git://github.com/workmajj/slushbox.git
+        <p>Lorem ipsum blah blah blah.</p>
 
-3. Run Slushbox, telling it to open an example file and to watch its directory (and subdirectories) for changes:
+3. Run Slushbox in that directory, telling it to open the file and watch the directory (and any subdirectories) for changes:
 
-        $ ./slushbox.py ../example/ugly.html
+        $ slushbox test.html
 
 4. At this point, Chrome should open if it's not already running, and the page will load in a new tab.
 
-5. Use a text editor to open the ```style.css``` page, located in the ```example/static``` directory.
+5. Now use a text editor to modify ```test.html```. Slushbox will reload the page in Chrome when you save. You can also try adding or deleting files in the directory, or creating and modifying subdirectories. While the page is open in Chrome, you can even navigate to other linked files.
 
-6. Modify ```style.css``` and then save your changes. When you save, ```ugly.html``` will reload in Chrome automatically.
-
-7. Try adding or deleting a file in the ```example``` directory and watch Slushbox reload. You can even navigate to other pages in the directory.
-
-8. When you're finished, close the browser tab Slushbox originally opened; the command-line program will quit automatically.
+6. When you're finished, close the browser tab Slushbox originally opened; the command-line program will quit automatically.
 
 License
 -------
