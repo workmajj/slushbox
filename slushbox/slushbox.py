@@ -12,6 +12,7 @@ import fsevents
 from applescripts import OPEN_SCRIPT, RELOAD_SCRIPT, IS_OPEN_SCRIPT
 
 BROWSER = "Google Chrome"
+DEBUG = False
 
 def osascript(script):
     return commands.getoutput("osascript -e '%s'" % (script))
@@ -25,26 +26,29 @@ def page_is_open(directory, window, tab):
 
 def reload_page(page, window, tab, event):
     # See fsevents for inotify names.
-    if event.mask & fsevents.IN_MODIFY:
-        print "File modified: %s" % (event.name)
-    elif event.mask & fsevents.IN_ATTRIB:
-        print "File modified: %s" % (event.name)
-    elif event.mask & fsevents.IN_CREATE:
-        print "File created: %s" % (event.name)
-    elif event.mask & fsevents.IN_DELETE:
-        print "File deleted: %s" % (event.name)
-    elif event.mask & fsevents.IN_MOVED_FROM:
-        print "File renamed: %s" % (event.name)
-    elif event.mask & fsevents.IN_MOVED_TO:
-        print "File renamed: %s" % (event.name)
+    if DEBUG:
+        if event.mask & fsevents.IN_MODIFY:
+            print "File modified: %s" % (event.name)
+        elif event.mask & fsevents.IN_ATTRIB:
+            print "File modified: %s" % (event.name)
+        elif event.mask & fsevents.IN_CREATE:
+            print "File created: %s" % (event.name)
+        elif event.mask & fsevents.IN_DELETE:
+            print "File deleted: %s" % (event.name)
+        elif event.mask & fsevents.IN_MOVED_FROM:
+            print "File renamed: %s" % (event.name)
+        elif event.mask & fsevents.IN_MOVED_TO:
+            print "File renamed: %s" % (event.name)
     
-    print "Using %s to reload file: %s" % (BROWSER, page)
+    if DEBUG:
+        print "Using %s to reload file: %s" % (BROWSER, page)
     output = osascript(RELOAD_SCRIPT % (BROWSER, tab, window))
     if re.search(r'got an error', output):
         raise Exception("Window and/or tab no longer open.")
 
 def open_page(page):
-    print "Using %s to open file: %s" % (BROWSER, page)
+    if DEBUG:
+        print "Using %s to open file: %s" % (BROWSER, page)
     output = osascript(OPEN_SCRIPT % (BROWSER, page))
     r = re.search(r'tab id (\d+) of window id (\d+)', output)
     if not r:
