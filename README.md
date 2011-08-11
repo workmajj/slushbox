@@ -21,8 +21,6 @@ At this point, Slushbox has a few known (and probably some unknown!) limitations
 
 * Has no way to integrate with URLs routed by web frameworks.
 
-* Cannot yet execute arbitrary commands (e.g., also run unit tests when files are modified).
-
 Thanks to Robert Winslow ([@robert_winslow](http://twitter.com/robert_winslow)) for the initial project idea!
 
 Testing & Usage
