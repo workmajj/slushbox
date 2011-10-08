@@ -1,3 +1,7 @@
 #!/usr/bin/env sh
 
-python -m slushbox.slushbox $1
+hash python 2>&- || { echo "Requires python. Aborting."; exit 1; }
+
+python -m slushbox.slushbox $@
+
+exit 0
