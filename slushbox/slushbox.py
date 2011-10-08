@@ -6,6 +6,7 @@ import os.path
 import re
 import string
 import sys
+import time
 
 import fsevents
 
@@ -71,6 +72,9 @@ def main():
     observer.start()
     try:
         while True:
+            # Hack: Running the AppleScript in page_is_open() too quickly will
+            # fail to return the correct result; one-second delay makes it work.
+            time.sleep(1)
             # End program if page is closed in browser.
             if not page_is_open(directory, window, tab):
                 observer.stop()
