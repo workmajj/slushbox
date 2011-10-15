@@ -51,17 +51,26 @@ def reload_page(page, window, tab, event):
     if re.search(r'got an error', output):
         raise Exception("Window and/or tab no longer open.")
 
-def page_is_open(directory, window, tab):
+def page_is_open(test_string, window, tab):
     output = osascript(IS_OPEN_SCRIPT % (BROWSER, tab, window))
-    return re.search(directory, output)
+    return re.search(test_string, output)
 
 ###############################################################################
 
 def main():
+    # e.g.: $ slushbox ~/foo/bar.html
     if len(sys.argv) == 2:
         f = os.path.abspath(sys.argv[1])
-        page = "file://%s" % (f)
+        if not os.path.isfile(f):
+            raise Exception("File %s was not found." % (f))
         directory = os.path.dirname(f)
+        page = "file://%s" % (f)
+    # e.g.: $ slushbox ~/foo/ http://bar.baz/qux/
+    elif len(sys.argv) == 3:
+        directory = os.path.abspath(sys.argv[1])
+        if not os.path.isdir(directory):
+            raise Exception("Directory %s was not found." % (directory))
+        page = sys.argv[2]
     else:
         raise Exception("Must pass path of file to open and watch, or path " \
             "to watch and URL to open and refresh.")
@@ -80,9 +89,14 @@ def main():
             # fail to return correct result; one-second delay makes it work.
             time.sleep(1)
             # End program if page is closed in browser.
-            if not page_is_open(directory, window, tab):
-                observer.stop()
-                break
+            if len(sys.argv) == 2:
+                if not page_is_open(directory, window, tab):
+                    observer.stop()
+                    break
+            else:
+                if not page_is_open(page, window, tab):
+                    observer.stop()
+                    break
             # End program if thread raises exception.
             if not observer.isAlive():
                 break
