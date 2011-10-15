@@ -12,19 +12,28 @@ import fsevents
 
 from applescripts import OPEN_SCRIPT, RELOAD_SCRIPT, IS_OPEN_SCRIPT
 
+###############################################################################
+
 BROWSER = "Google Chrome"
 DEBUG = False
+
+###############################################################################
 
 def osascript(script):
     return commands.getoutput("osascript -e '%s'" % (script))
 
-def page_is_open(directory, window, tab):
-    output = osascript(IS_OPEN_SCRIPT % (BROWSER, tab, window))
-    return re.search(directory, output)
+def open_page(page):
+    if DEBUG:
+        print "Using %s to open: %s" % (BROWSER, page)
+    output = osascript(OPEN_SCRIPT % (BROWSER, page))
+    r = re.search(r'tab id (\d+) of window id (\d+)', output)
+    if not r:
+        raise Exception("Couldn't get window and/or tab IDs.")
+    return (r.group(2), r.group(1))
 
 def reload_page(page, window, tab, event):
-    # See fsevents for inotify names.
     if DEBUG:
+        # See fsevents for inotify names.
         if event.mask & fsevents.IN_MODIFY:
             print "File modified: %s" % (event.name)
         elif event.mask & fsevents.IN_ATTRIB:
@@ -37,26 +46,22 @@ def reload_page(page, window, tab, event):
             print "File renamed: %s" % (event.name)
         elif event.mask & fsevents.IN_MOVED_TO:
             print "File renamed: %s" % (event.name)
-    
-    if DEBUG:
         print "Using %s to reload: %s" % (BROWSER, page)
     output = osascript(RELOAD_SCRIPT % (BROWSER, tab, window))
     if re.search(r'got an error', output):
         raise Exception("Window and/or tab no longer open.")
 
-def open_page(page):
-    if DEBUG:
-        print "Using %s to open: %s" % (BROWSER, page)
-    output = osascript(OPEN_SCRIPT % (BROWSER, page))
-    r = re.search(r'tab id (\d+) of window id (\d+)', output)
-    if not r:
-        raise Exception("Couldn't get window and/or tab IDs.")
-    return (r.group(2), r.group(1))
+def page_is_open(directory, window, tab):
+    output = osascript(IS_OPEN_SCRIPT % (BROWSER, tab, window))
+    return re.search(directory, output)
+
+###############################################################################
 
 def main():
     if len(sys.argv) == 2:
-        page = "file://%s" % (os.path.abspath(sys.argv[1]))
-        directory = os.path.dirname(os.path.abspath(sys.argv[1]))
+        f = os.path.abspath(sys.argv[1])
+        page = "file://%s" % (f)
+        directory = os.path.dirname(f)
     else:
         raise Exception("Must pass path of file to open and watch, or path " \
             "to watch and URL to open and refresh.")
@@ -72,7 +77,7 @@ def main():
     try:
         while True:
             # Hack: Running the AppleScript in page_is_open() too quickly will
-            # fail to return the correct result; one-second delay makes it work.
+            # fail to return correct result; one-second delay makes it work.
             time.sleep(1)
             # End program if page is closed in browser.
             if not page_is_open(directory, window, tab):
