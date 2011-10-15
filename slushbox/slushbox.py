@@ -20,7 +20,7 @@ def osascript(script):
 
 def page_is_open(directory, window, tab):
     output = osascript(IS_OPEN_SCRIPT % (BROWSER, tab, window))
-    if re.search(r'file://%s' % (directory), output):
+    if re.search(directory, output):
         return True
     else:
         return False
@@ -42,14 +42,14 @@ def reload_page(page, window, tab, event):
             print "File renamed: %s" % (event.name)
     
     if DEBUG:
-        print "Using %s to reload file: %s" % (BROWSER, page)
+        print "Using %s to reload: %s" % (BROWSER, page)
     output = osascript(RELOAD_SCRIPT % (BROWSER, tab, window))
     if re.search(r'got an error', output):
         raise Exception("Window and/or tab no longer open.")
 
 def open_page(page):
     if DEBUG:
-        print "Using %s to open file: %s" % (BROWSER, page)
+        print "Using %s to open: %s" % (BROWSER, page)
     output = osascript(OPEN_SCRIPT % (BROWSER, page))
     r = re.search(r'tab id (\d+) of window id (\d+)', output)
     if not r:
@@ -57,10 +57,12 @@ def open_page(page):
     return (r.group(2), r.group(1))
 
 def main():
-    if len(sys.argv) != 2:
-        raise Exception("Must pass name of exactly one file to open.")
-    page = os.path.abspath(sys.argv[1])
-    directory = os.path.dirname(page)
+    if len(sys.argv) == 2:
+        page = "file://%s" % (os.path.abspath(sys.argv[1]))
+        directory = os.path.dirname(os.path.abspath(sys.argv[1]))
+    else:
+        raise Exception("Must pass path of file to open and watch, or path " \
+            "to watch and URL to open and refresh.")
     
     (window, tab) = open_page(page)
     callback = functools.partial(reload_page, page, window, tab)
