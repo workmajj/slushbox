@@ -20,10 +20,7 @@ def osascript(script):
 
 def page_is_open(directory, window, tab):
     output = osascript(IS_OPEN_SCRIPT % (BROWSER, tab, window))
-    if re.search(directory, output):
-        return True
-    else:
-        return False
+    return re.search(directory, output)
 
 def reload_page(page, window, tab, event):
     # See fsevents for inotify names.
