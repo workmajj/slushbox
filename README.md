@@ -49,7 +49,7 @@ Testing & Usage
         $ mkdir random-directory
         $ slushbox random-directory https://github.com/workmajj/slushbox
 
-8. Now when you modify the contents of ```random-directory```, Chrome will reload that page (or the current page if you've navigated away).
+8. Now when you modify the contents of ```random-directory```, Chrome will reload that GitHub page (or the current page if you've navigated away).
 
 [License](http://en.wikipedia.org/wiki/BSD_licenses#3-clause_license_.28.22New_BSD_License.22_or_.22Modified_BSD_License.22.29)
 -------
