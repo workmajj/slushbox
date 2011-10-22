@@ -13,7 +13,7 @@ Description
 
 When building static web pages, you need to reload them often to see your changes. [Slushbox](http://www.urbandictionary.com/define.php?term=slushbox) opens web pages and then refreshes them automatically when files in their respective directories (or subdirectories) change. So if you edit a CSS file, for example, Slushbox will notice and refresh accordingly.
 
-Slushbox also works with arbitrary URLs, which helps address situations where a web framework is handling your URL routing or you're working in a dev environment with server-hosted pages.
+Slushbox also works with arbitrary URLs. This addresses situations where a web framework is handling your URL routing or you're working in a server-hosted dev environment. Slushbox will stay open so long as the initial URL can be pattern-matched in the browser bar, so you can even navigate to subpages while using it.
 
 At this point, Slushbox has a couple known (and probably some unknown!) limitations:
 
@@ -49,7 +49,7 @@ Testing & Usage
         $ mkdir random-directory
         $ slushbox random-directory https://github.com/workmajj/slushbox
 
-8. Now Chrome will refresh when you save or modify a file in ```random-directory```.
+8. Now when you modify ```random-directory```, Chrome will reload the GitHub page (or the current page if you've navigated to a subdirectory).
 
 [License](http://en.wikipedia.org/wiki/BSD_licenses#3-clause_license_.28.22New_BSD_License.22_or_.22Modified_BSD_License.22.29)
 -------
