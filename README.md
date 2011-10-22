@@ -26,7 +26,7 @@ Thanks to Robert Winslow ([@robert_winslow](http://twitter.com/robert_winslow)) 
 Running on OS X 10.7 Lion
 -------------------------
 
-Slushbox relies on the [MacFSEvents](http://pypi.python.org/pypi/MacFSEvents) library, which will be installed automatically if you use ```pip```. Parts of MacFSEvents are written in C and will not compile under Lion's new defaults. If you want to install Slushbox on Lion, first tell OS X to use ```gcc``` instead of ```llvm-gcc```, which is the new default:
+Slushbox relies on the [MacFSEvents](http://pypi.python.org/pypi/MacFSEvents) library, which will be installed automatically if you use ```pip```. Parts of MacFSEvents are written in C and will not compile under Lion's new defaults. If you want to install Slushbox on Lion, first tell OS X to use ```gcc``` instead of ```llvm-gcc``` (which is the new default):
 
     $ CC=/usr/bin/gcc-4.1
 
