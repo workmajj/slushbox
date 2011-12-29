@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name="Slushbox",
-    version="0.2",
+    version="0.2.1",
     author="John J. Workman",
     author_email="workman@alumni.duke.edu",
     url="https://github.com/workmajj/slushbox",
